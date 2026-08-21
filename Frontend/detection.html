@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Road Hazard Detection</title>
+
+    <link rel="stylesheet" href="detection.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+
+    <nav>
+      <div class="logo">
+        <i class="fa-solid fa-road"></i>
+
+        RoadSafe AI
+      </div>
+    </nav>
+
+    <!-- Detection Section -->
+
+    <section class="upload-section">
+      <h1>AI Road Hazard Detection</h1>
+
+      <p>Capture road images/videos and let AI identify hazards.</p>
+
+      <div class="camera-card">
+        <div class="camera-box">
+          <video id="cameraPreview" autoplay playsinline></video>
+
+          <div class="camera-overlay">
+            <i class="fa-solid fa-video"></i>
+          </div>
+        </div>
+ 
+        <div class="camera-status" id="cameraStatus">Camera not started</div>
+
+        <div class="camera-buttons">
+          <button id="startCamera" type="button">
+            <i class="fa-solid fa-camera"></i>
+
+            Start Camera
+          </button>
+
+          <button id="captureBtn" type="button">
+            <i class="fa-solid fa-circle"></i>
+
+            Capture
+          </button>
+        </div>
+      </div>
+
+      <!-- Hidden Canvas for capturing frame -->
+
+      <canvas id="canvas"></canvas>
+    </section>
+
+    <script src="app.js"></script>
+  </body>
+</html>

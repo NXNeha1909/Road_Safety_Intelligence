@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+python-multipart
+pydantic
+sqlalchemy
+# ultralytics # Uncomment this when you are ready to use the actual YOLOv8 model
+# opencv-python-headless # Required for YOLOv8

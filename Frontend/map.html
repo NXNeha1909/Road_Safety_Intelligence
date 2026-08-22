@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>RoadSafe AI Map</title>
+
+    <link rel="stylesheet" href="map.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  </head>
+
+  <body>
+    <nav>
+      <h2>
+        <i class="fa-solid fa-road"></i>
+        DriveSafe AI
+      </h2>
+    </nav>
+
+    <section class="map-section">
+      <h1>Hazard Detection Map</h1>
+
+      <p>Real-time pothole locations detected by AI</p>
+      <div class="hazard-counter" id="hazardCount">⚠️ Hazards Detected: 0</div>
+
+      <div id="map"></div>
+    </section>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script src="map.js"></script>
+  </body>
+</html>

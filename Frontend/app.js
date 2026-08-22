@@ -8,7 +8,7 @@ const status = document.getElementById("cameraStatus");
 
 let stream = null;
 
-// Start Camera
+// START CAMERA
 
 if (startCameraBtn) {
   startCameraBtn.addEventListener("click", async (event) => {
@@ -25,6 +25,8 @@ if (startCameraBtn) {
 
       video.srcObject = stream;
 
+      await video.play();
+
       status.innerHTML = "🟢 Camera Active";
 
       console.log("Camera Started");
@@ -36,10 +38,10 @@ if (startCameraBtn) {
   });
 }
 
-// Capture + Upload
+// CAPTURE IMAGE
 
 if (captureBtn) {
-  captureBtn.addEventListener("click", (event) => {
+  captureBtn.addEventListener("click", async (event) => {
     event.preventDefault();
 
     if (!stream) {
@@ -72,7 +74,7 @@ if (captureBtn) {
 
     status.innerHTML = "📸 Image Captured";
 
-    // Get Location
+    // Location
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -84,60 +86,66 @@ if (captureBtn) {
 
         console.log("Longitude:", longitude);
 
-        // Convert Image
+        // Convert canvas to image
 
-        canvas.toBlob((blob) => {
-          const imageFile = new File(
-            [blob],
+        canvas.toBlob(
+          async (blob) => {
+            const imageFile = new File(
+              [blob],
 
-            "captured-road.jpg",
+              "captured-road.jpg",
 
-            {
-              type: "image/jpeg",
-            },
-          );
+              {
+                type: "image/jpeg",
+              },
+            );
 
-          console.log("Image File:", imageFile);
+            console.log("Image File:", imageFile);
 
-          // Form Data
+            const formData = new FormData();
 
-          const formData = new FormData();
+            formData.append("image", imageFile);
 
-          formData.append("image", imageFile);
+            formData.append("lat", latitude);
 
-          formData.append("lat", latitude);
+            formData.append("lng", longitude);
 
-          formData.append("lng", longitude);
+            try {
+              const response = await fetch(
+                "http://127.0.0.1:8000/report-hazard",
+                {
+                  method: "POST",
 
-          // Backend API Call
+                  body: formData,
+                },
+              );
 
-          fetch("http://127.0.0.1:8000/report-hazard", {
-            method: "POST",
+              const data = await response.json();
 
-            body: formData,
-          })
-            .then((response) => response.json())
-
-            .then((data) => {
               console.log("Backend Response:");
-
+              video.srcObject = stream;
               console.log(data);
 
               if (data.status === "success") {
                 status.innerHTML = "⚠️ Pothole Detected";
+                console.log("Camera still running");
               } else {
                 status.innerHTML = "✅ Road Safe";
               }
-
-              console.log("UI UPDATE DONE");
-            })
-
-            .catch((error) => {
+            } catch (error) {
               console.log("Backend Error:", error);
 
-              status.innerHTML = "❌ Backend Connection Failed";
-            });
-        }, "image/jpeg");
+              status.innerHTML = "❌ Backend Error";
+            }
+
+            // IMPORTANT
+            // Keep camera alive
+
+            video.srcObject = stream;
+          },
+
+          "image/jpeg",
+        );
       },
 
       (error) => {

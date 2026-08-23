@@ -1,280 +1,823 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* ================================
+   DESIGN TOKENS
+   (matches Frontend/style.css so the
+   whole app shares one design system)
+   ================================ */
+
+:root {
+  --bg: #07111f;
+  --card: rgba(15, 31, 50, 0.72);
+  --white: #f5f9ff;
+  --muted: #91a4ba;
+  --blue: #27a9ff;
+  --blue-dark: #087ed1;
+  --green: #39e6a0;
+  --orange: #ffad42;
+  --danger: #ff4d5e;
+  --border: rgba(255, 255, 255, 0.09);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  font-family: "Inter", sans-serif;
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(39, 169, 255, 0.15),
-      transparent 35%
-    ),
-    #07111f;
-
-  color: white;
+    radial-gradient(circle at 80% 15%, rgba(20, 135, 230, 0.12), transparent 30%),
+    var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
 }
 
-/* Navbar */
+/* ================================
+   NAVBAR
+   ================================ */
 
 nav {
   height: 82px;
-
   padding: 0 7%;
-
-  background: rgba(7, 17, 31, 0.8);
-
-  backdrop-filter: blur(15px);
-
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(7, 17, 31, 0.78);
+  backdrop-filter: blur(18px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-
-/* Logo */
 
 .logo {
   display: flex;
-
   align-items: center;
-
+  gap: 12px;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 22px;
-
-  font-weight: bold;
+  font-weight: 700;
 }
 
-.logo i {
-  color: #38bdf8;
-
-  margin-right: 8px;
+.logo span span {
+  color: var(--blue);
 }
 
-/* Navbar Links */
-
-.nav-links {
-  display: flex;
-
-  gap: 25px;
-}
-
-.nav-links a {
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
   color: white;
-
-  text-decoration: none;
-
-  font-size: 15px;
-
-  font-weight: bold;
-
-  transition: 0.3s;
+  background: linear-gradient(135deg, #1599ec, #075ca4);
+  box-shadow: 0 8px 25px rgba(39, 169, 255, 0.25);
 }
 
-.nav-links a:hover {
-  color: #38bdf8;
+.nav-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(57, 230, 160, 0.1);
+  border: 1px solid rgba(57, 230, 160, 0.25);
+  padding: 8px 14px;
+  border-radius: 20px;
 }
 
-/* Main Section */
+.nav-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+}
+
+/* ================================
+   HERO / INTRO
+   ================================ */
 
 .upload-section {
   min-height: calc(100vh - 82px);
+  padding: 55px 7% 40px;
+  text-align: center;
+}
 
-  display: flex;
-
-  flex-direction: column;
-
+.badge-pill {
+  display: inline-flex;
   align-items: center;
-
-  justify-content: center;
-
-  padding: 40px 20px;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(39, 169, 255, 0.12);
+  border: 1px solid rgba(39, 169, 255, 0.3);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-bottom: 18px;
 }
 
 .upload-section h1 {
-  font-size: 42px;
-
-  font-weight: 800;
-
-  color: white;
-
-  margin-bottom: 15px;
-
-  text-align: center;
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(30px, 4vw, 46px);
+  letter-spacing: -1px;
 }
 
-.upload-section p {
-  font-size: 18px;
-
-  color: #94a3b8;
-
-  margin-bottom: 30px;
-
-  text-align: center;
+.upload-section > p.subtitle {
+  margin: 12px auto 38px;
+  max-width: 650px;
+  font-size: 16px;
+  color: var(--muted);
 }
 
-/* Camera Card */
+/* ================================
+   GLASS CARD (shared)
+   ================================ */
+
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+}
+
+/* ================================
+   CAMERA CARD
+   ================================ */
 
 .camera-card {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  background: rgba(15, 31, 50, 0.75);
-
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  backdrop-filter: blur(15px);
-
-  padding: 35px;
-
-  border-radius: 25px;
-
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  width: min(850px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
 }
-
-/* Camera Preview */
 
 .camera-box {
   position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #030a13;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
 }
 
 #cameraPreview {
-  width: 520px;
-
-  height: 320px;
-
-  background: black;
-
-  border-radius: 15px;
-
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-
-  display: block;
+  background: #030a13;
 }
-
-/* Camera Icon */
 
 .camera-overlay {
   position: absolute;
-
-  top: 15px;
-
-  right: 15px;
-
-  height: 40px;
-
-  width: 40px;
-
-  background: #ef4444;
-
-  color: white;
-
-  border-radius: 50%;
-
+  inset: 0;
   display: flex;
-
   align-items: center;
-
   justify-content: center;
+  pointer-events: none;
 }
 
-/* Status */
+.camera-overlay i {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 27px;
+}
+
+/* Mode badge, top-left of the camera box */
+
+.mode-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--white);
+  background: rgba(9, 21, 35, 0.85);
+  border: 1px solid var(--border);
+  transition: 0.25s ease;
+}
+
+.mode-badge.driving {
+  color: #07111f;
+  background: var(--blue);
+  border-color: var(--blue);
+  box-shadow: 0 0 18px rgba(39, 169, 255, 0.5);
+}
+
+/* Blinking REC indicator, top-right of the camera box, shown only in Driving Mode */
+
+.rec-indicator {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: rgba(255, 77, 94, 0.15);
+  border: 1px solid rgba(255, 77, 94, 0.4);
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.rec-indicator .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+  animation: pulse-dot 1.1s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+/* Status line */
 
 .camera-status {
-  margin-top: 20px;
-
-  padding: 10px 20px;
-
-  border-radius: 20px;
-
-  background: rgba(39, 169, 255, 0.1);
-
-  border: 1px solid rgba(39, 169, 255, 0.3);
-
-  color: #7dd3fc;
-
-  font-weight: bold;
+  margin: 18px 0;
+  padding: 11px 16px;
+  border-radius: 10px;
+  background: rgba(39, 169, 255, 0.08);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* Buttons */
 
-.camera-buttons {
+.camera-buttons,
+.driving-buttons {
   display: flex;
-
   justify-content: center;
-
-  gap: 20px;
-
-  margin-top: 25px;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
-button {
-  padding: 14px 30px;
-
+.camera-buttons button,
+.driving-buttons button {
   border: none;
-
+  padding: 13px 24px;
   border-radius: 10px;
-
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-
-  font-size: 16px;
-
+  transition: 0.25s ease;
   color: white;
+  font-family: inherit;
+}
 
-  transition: 0.3s;
+.camera-buttons button i,
+.driving-buttons button i {
+  margin-right: 7px;
 }
 
 #startCamera {
-  background: #2563eb;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
 }
 
 #startCamera:hover {
-  background: #1d4ed8;
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-2px);
 }
 
 #captureBtn {
-  background: #dc2626;
+  background: var(--green);
+  color: #06231a;
 }
 
 #captureBtn:hover {
-  background: #b91c1c;
+  background: #2fd191;
+  transform: translateY(-2px);
 }
 
-/* Hidden Canvas */
+/* Divider between manual controls and driving mode controls */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Driving mode buttons */
+
+.btn-drive {
+  background: linear-gradient(135deg, #1599ec, #075ca4);
+  box-shadow: 0 8px 25px rgba(39, 169, 255, 0.25);
+}
+
+.btn-drive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(39, 169, 255, 0.4);
+}
+
+.btn-stop {
+  background: rgba(255, 77, 94, 0.15);
+  border: 1px solid rgba(255, 77, 94, 0.4) !important;
+  color: var(--danger);
+}
+
+.btn-stop:hover {
+  background: rgba(255, 77, 94, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Driving stats panel - styled like a live vehicle safety dashboard */
+
+.driving-stats {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(39, 169, 255, 0.25);
+  background: linear-gradient(
+    160deg,
+    rgba(39, 169, 255, 0.08),
+    rgba(15, 31, 50, 0.6)
+  );
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.3),
+    inset 0 0 30px rgba(39, 169, 255, 0.05);
+}
+
+/* Header row: "DRIVING MODE ACTIVE" + live monitoring badge */
+
+.driving-status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.driving-status-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.driving-status-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--white);
+}
+
+.driving-status-title i {
+  color: var(--blue);
+}
+
+/* Pulsing "live" dot - reuses the same pulse timing as the REC indicator */
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+  animation: pulse-dot 1.1s infinite;
+}
+
+.driving-status-right {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(57, 230, 160, 0.1);
+  border: 1px solid rgba(57, 230, 160, 0.3);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.driving-status-right i {
+  font-size: 10px;
+}
+
+/* Stat cards grid */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.driving-stats .stat {
+  padding: 14px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: 0.25s ease;
+}
+
+.driving-stats .stat:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
+}
+
+.driving-stats .stat-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.driving-stats .stat-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--white);
+}
+
+.driving-stats .stat-value.ok {
+  color: var(--green);
+}
+
+.driving-stats .stat-value.warn {
+  color: var(--danger);
+}
+
+/* ================================
+   WARNING BANNER (pothole alert)
+   ================================ */
+
+.warning-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-140%);
+  z-index: 999;
+  width: min(560px, 92vw);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 77, 94, 0.97), rgba(180, 20, 40, 0.97));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  padding: 18px 20px;
+  /* Smooth slide-down/up appearance */
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s ease;
+  opacity: 0;
+}
+
+.warning-banner.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  /* Quick attention-grabbing shake right after it lands, then a
+     continuous red glow pulse for as long as it's on screen. */
+  animation:
+    banner-shake 0.5s ease 0.45s,
+    banner-glow 1.6s ease-in-out 0.45s infinite;
+}
+
+@keyframes banner-shake {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  20% { transform: translateX(-50%) translateY(0) rotate(-1.2deg) translateX(-4px); }
+  40% { transform: translateX(-50%) translateY(0) rotate(1.2deg) translateX(4px); }
+  60% { transform: translateX(-50%) translateY(0) rotate(-0.8deg) translateX(-3px); }
+  80% { transform: translateX(-50%) translateY(0) rotate(0.8deg) translateX(3px); }
+}
+
+@keyframes banner-glow {
+  0%, 100% {
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.45),
+      0 0 20px rgba(255, 77, 94, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.5),
+      0 0 55px rgba(255, 77, 94, 0.85);
+  }
+}
+
+.warning-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.warning-icon {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.warning-text {
+  flex: 1;
+}
+
+.warning-text h2 {
+  margin: 0 0 8px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+  color: white;
+}
+
+.warning-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.warning-meta span {
+  background: rgba(0, 0, 0, 0.18);
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.dismiss-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.8;
+  padding: 0 2px;
+}
+
+.dismiss-btn:hover {
+  opacity: 1;
+}
+
+/* ================================
+   HAZARD DETECTION SHOWCASE
+   ================================ */
+
+.hazard-section {
+  max-width: 1100px;
+  margin: 65px auto 0;
+}
+
+.hazard-heading {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.hazard-heading h2 {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 28px;
+}
+
+.hazard-heading p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.hazard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.hazard-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 260px;
+  border-radius: 18px;
+  background: #030a13;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.hazard-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.hazard-card:hover img {
+  transform: scale(1.06);
+}
+
+.hazard-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(3, 10, 19, 0.95),
+    rgba(3, 10, 19, 0.05) 65%
+  );
+}
+
+.hazard-info {
+  position: absolute;
+  z-index: 2;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+  text-align: left;
+  color: white;
+}
+
+.hazard-info h3 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+
+.hazard-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #d8e2ea;
+}
+
+.detected-badge {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  background: rgba(255, 77, 94, 0.92);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.detected-badge i {
+  font-size: 10px;
+}
+
+/* ================================
+   SAFETY MESSAGE
+   ================================ */
+
+.safety-message {
+  max-width: 900px;
+  margin: 65px auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: var(--white);
+}
+
+.safety-line {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(to right, transparent, var(--border));
+}
+
+.safety-line.right {
+  background: linear-gradient(to left, transparent, var(--border));
+}
+
+.safety-message span {
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.safety-message i {
+  color: var(--blue);
+  margin-right: 6px;
+}
+
+/* Hidden canvas used only for frame capture */
 
 #canvas {
   display: none;
 }
 
-/* Mobile */
+/* ================================
+   RESPONSIVE
+   ================================ */
 
-@media (max-width: 600px) {
-  .nav-links {
-    display: none;
+@media (max-width: 850px) {
+  .hazard-grid {
+    grid-template-columns: 1fr;
   }
 
+  .hazard-card {
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+  }
+
+  .camera-box {
+    height: 350px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
   nav {
-    padding: 0 20px;
+    padding: 0 5%;
+  }
+
+  .upload-section {
+    padding: 40px 5% 30px;
+  }
+
+  .logo {
+    font-size: 19px;
   }
 
   .camera-card {
-    width: 95%;
+    padding: 15px;
   }
 
-  #cameraPreview {
+  .camera-box {
+    height: 280px;
+  }
+
+  .camera-buttons,
+  .driving-buttons {
+    flex-direction: column;
+  }
+
+  .camera-buttons button,
+  .driving-buttons button {
     width: 100%;
-
-    height: 250px;
   }
 
-  .upload-section h1 {
-    font-size: 30px;
+  .safety-line {
+    display: none;
+  }
+
+  .safety-message span {
+    white-space: normal;
+  }
+
+  .warning-banner {
+    top: 12px;
+    width: 94vw;
+    padding: 14px 16px;
   }
 }

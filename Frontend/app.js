@@ -1,158 +1,359 @@
+const API_BASE = "http://127.0.0.1:8000";
+
+// Camera Elements
+
 const startCameraBtn = document.getElementById("startCamera");
 const captureBtn = document.getElementById("captureBtn");
 
 const video = document.getElementById("cameraPreview");
 const canvas = document.getElementById("canvas");
 
+const cameraOverlay = document.getElementById("cameraOverlay");
 const status = document.getElementById("cameraStatus");
+
+// Driving Mode Elements
+
+const startDrivingBtn = document.getElementById("startDriving");
+const stopDrivingBtn = document.getElementById("stopDriving");
+
+const drivingStats = document.getElementById("drivingStats");
+
+const gpsStatus = document.getElementById("gpsStatus");
+const framesSent = document.getElementById("framesSent");
+const hazardsFound = document.getElementById("hazardsFound");
+const nextScan = document.getElementById("nextScan");
+
+// Warning Elements
+
+const warningBanner = document.getElementById("warningBanner");
+const warnConfidence = document.getElementById("warnConfidence");
+const warnTime = document.getElementById("warnTime");
+const warnLocation = document.getElementById("warnLocation");
+const dismissWarning = document.getElementById("dismissWarning");
+
+// Variables
 
 let stream = null;
 
-// START CAMERA
+let drivingMode = false;
 
-if (startCameraBtn) {
-  startCameraBtn.addEventListener("click", async (event) => {
-    event.preventDefault();
+let gpsWatch = null;
 
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "environment",
-        },
+let currentLocation = null;
 
-        audio: false,
-      });
+let frameTimer = null;
 
-      video.srcObject = stream;
+let sendingFrame = false;
 
-      await video.play();
+let frameCount = 0;
 
-      status.innerHTML = "🟢 Camera Active";
+let hazardCount = 0;
 
-      console.log("Camera Started");
-    } catch (error) {
-      console.log("Camera Error:", error);
+let warningTimer = null;
 
-      alert("Camera permission denied");
-    }
+let lastVoiceTime = 0;
+
+// Camera Start
+
+async function startCamera() {
+  if (stream) return true;
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "environment",
+      },
+
+      audio: false,
+    });
+
+    video.srcObject = stream;
+
+    cameraOverlay.style.display = "none";
+
+    console.log("Camera Started");
+
+    return true;
+  } catch (error) {
+    console.log(error);
+
+    alert("Camera permission denied");
+
+    return false;
+  }
+}
+
+// Capture Image
+
+function captureImage() {
+  canvas.width = video.videoWidth;
+
+  canvas.height = video.videoHeight;
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => {
+      resolve(blob);
+    }, "image/jpeg");
   });
 }
 
-// CAPTURE IMAGE
+// Send Image Backend
 
-if (captureBtn) {
-  captureBtn.addEventListener("click", async (event) => {
-    event.preventDefault();
+function sendImage(blob, lat, lng) {
+  const file = new File([blob], "captured-road.jpg", {
+    type: "image/jpeg",
+  });
 
-    if (!stream) {
-      alert("Start camera first");
+  const formData = new FormData();
 
-      return;
-    }
+  formData.append("image", file);
 
-    // Capture frame
+  formData.append("lat", lat);
 
-    canvas.width = video.videoWidth;
+  formData.append("lng", lng);
 
-    canvas.height = video.videoHeight;
+  return fetch(`${API_BASE}/report-hazard`, {
+    method: "POST",
+    body: formData,
+  }).then((res) => res.json());
+}
 
-    const ctx = canvas.getContext("2d");
+// Voice Alert
 
-    ctx.drawImage(
-      video,
+function voiceAlert() {
+  if (!("speechSynthesis" in window)) return;
 
-      0,
+  const now = Date.now();
 
-      0,
+  if (now - lastVoiceTime < 8000) return;
 
-      canvas.width,
+  lastVoiceTime = now;
 
-      canvas.height,
-    );
+  speechSynthesis.cancel();
 
-    console.log("Image Captured");
+  const speech = new SpeechSynthesisUtterance(
+    "Warning. Pothole detected ahead. Please slow down.",
+  );
 
-    status.innerHTML = "📸 Image Captured";
+  speech.lang = "en-US";
 
-    // Location
+  speech.rate = 1;
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const latitude = position.coords.latitude;
+  speechSynthesis.speak(speech);
+}
 
-        const longitude = position.coords.longitude;
+// Warning Banner
 
-        console.log("Latitude:", latitude);
+function showWarning(confidence, location) {
+  warnConfidence.innerHTML = `Confidence: ${Math.round(confidence * 100)}%`;
 
-        console.log("Longitude:", longitude);
+  warnTime.innerHTML = `Time: ${new Date().toLocaleTimeString()}`;
 
-        // Convert canvas to image
+  warnLocation.innerHTML = `📍 ${location}`;
 
-        canvas.toBlob(
-          async (blob) => {
-            const imageFile = new File(
-              [blob],
+  warningBanner.hidden = false;
 
-              "captured-road.jpg",
+  voiceAlert();
 
-              {
-                type: "image/jpeg",
-              },
-            );
+  clearTimeout(warningTimer);
 
-            console.log("Image File:", imageFile);
+  warningTimer = setTimeout(() => {
+    warningBanner.hidden = true;
+  }, 6000);
+}
 
-            const formData = new FormData();
+dismissWarning?.addEventListener("click", () => {
+  warningBanner.hidden = true;
+});
 
-            formData.append("image", imageFile);
+// Manual Camera
 
-            formData.append("lat", latitude);
+startCameraBtn?.addEventListener("click", async (e) => {
+  e.preventDefault();
 
-            formData.append("lng", longitude);
+  const result = await startCamera();
 
-            try {
-              const response = await fetch(
-                "http://127.0.0.1:8000/report-hazard",
-                {
-                  method: "POST",
+  if (result) {
+    status.innerHTML = "🟢 Camera Active";
+  }
+});
 
-                  body: formData,
-                },
-              );
+// Manual Capture
 
-              const data = await response.json();
+captureBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
 
-              console.log("Backend Response:");
-              video.srcObject = stream;
-              console.log(data);
+  if (!stream) {
+    alert("Start camera first");
 
-              if (data.status === "success") {
-                status.innerHTML = "⚠️ Pothole Detected";
-                console.log("Camera still running");
-              } else {
-                status.innerHTML = "✅ Road Safe";
-              }
-            } catch (error) {
-              console.log("Backend Error:", error);
+    return;
+  }
 
-              status.innerHTML = "❌ Backend Error";
-            }
+  navigator.geolocation.getCurrentPosition(async (position) => {
+    const lat = position.coords.latitude;
 
-            // IMPORTANT
-            // Keep camera alive
+    const lng = position.coords.longitude;
 
-            video.srcObject = stream;
-          },
+    const image = await captureImage();
 
-          "image/jpeg",
+    sendImage(image, lat, lng).then((data) => {
+      console.log(data);
+
+      if (data.status === "success") {
+        status.innerHTML = "⚠️ Pothole Detected";
+
+        showWarning(
+          data.data?.[0]?.confidence || 0,
+
+          `${lat.toFixed(4)}, ${lng.toFixed(4)}`,
         );
-      },
-
-      (error) => {
-        console.log("Location Error:", error);
-
-        alert("Location permission required");
-      },
-    );
+      } else {
+        status.innerHTML = "✅ Road Safe";
+      }
+    });
   });
+});
+
+// GPS Tracking
+
+function startGPS() {
+  gpsWatch = navigator.geolocation.watchPosition(
+    (position) => {
+      currentLocation = {
+        lat: position.coords.latitude,
+
+        lng: position.coords.longitude,
+      };
+
+      gpsStatus.innerHTML = "🟢 Connected";
+    },
+
+    (error) => {
+      gpsStatus.innerHTML = "🔴 Error";
+    },
+  );
 }
+
+function stopGPS() {
+  if (gpsWatch) {
+    navigator.geolocation.clearWatch(gpsWatch);
+
+    gpsWatch = null;
+  }
+}
+
+// Driving Mode Capture
+
+async function drivingCapture() {
+  if (!drivingMode) return;
+
+  if (!currentLocation || sendingFrame) {
+    scheduleCapture();
+
+    return;
+  }
+
+  sendingFrame = true;
+
+  try {
+    const image = await captureImage();
+
+    const data = await sendImage(
+      image,
+
+      currentLocation.lat,
+
+      currentLocation.lng,
+    );
+
+    frameCount++;
+
+    framesSent.innerHTML = frameCount;
+
+    if (data.status === "success") {
+      hazardCount++;
+
+      hazardsFound.innerHTML = hazardCount;
+
+      status.innerHTML = "⚠️ Pothole Detected Ahead";
+
+      showWarning(
+        data.data?.[0]?.confidence || 0,
+
+        `${currentLocation.lat.toFixed(4)}, ${currentLocation.lng.toFixed(4)}`,
+      );
+    } else {
+      status.innerHTML = "✅ Road Clear - Monitoring";
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  sendingFrame = false;
+
+  scheduleCapture();
+}
+
+function scheduleCapture() {
+  if (!drivingMode) return;
+
+  clearTimeout(frameTimer);
+
+  frameTimer = setTimeout(
+    drivingCapture,
+
+    4000,
+  );
+}
+
+// Start Driving
+
+startDrivingBtn?.addEventListener(
+  "click",
+
+  async () => {
+    const started = await startCamera();
+
+    if (!started) return;
+
+    drivingMode = true;
+
+    startDrivingBtn.hidden = true;
+
+    stopDrivingBtn.hidden = false;
+
+    drivingStats.hidden = false;
+
+    status.innerHTML = "🚗 Driving Mode Active";
+
+    startGPS();
+
+    scheduleCapture();
+  },
+);
+
+// Stop Driving
+
+stopDrivingBtn?.addEventListener(
+  "click",
+
+  () => {
+    drivingMode = false;
+
+    clearTimeout(frameTimer);
+
+    stopGPS();
+
+    startDrivingBtn.hidden = false;
+
+    stopDrivingBtn.hidden = true;
+
+    drivingStats.hidden = true;
+
+    status.innerHTML = "🟢 Camera Active";
+  },
+);

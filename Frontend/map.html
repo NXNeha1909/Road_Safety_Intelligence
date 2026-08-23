@@ -5,26 +5,49 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>RoadSafe AI Map</title>
+    <title>DriveSafe AI | Hazard Map</title>
 
     <link rel="stylesheet" href="map.css" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
   </head>
 
   <body>
     <nav>
       <h2>
         <i class="fa-solid fa-road"></i>
+
         DriveSafe AI
       </h2>
     </nav>
 
     <section class="map-section">
-      <h1>Hazard Detection Map</h1>
+      <h1>Road Hazard Intelligence Map</h1>
 
       <p>Real-time pothole locations detected by AI</p>
+
       <div class="hazard-counter" id="hazardCount">⚠️ Hazards Detected: 0</div>
+
+      <!-- Map Legend -->
+
+      <div class="map-legend">
+        <span class="legend-item">
+          <span class="legend-dot hazard"></span>
+
+          Hazard Location
+        </span>
+
+        <span class="legend-item">
+          <span class="legend-dot user"></span>
+
+          Your Location
+        </span>
+      </div>
 
       <div id="map"></div>
     </section>

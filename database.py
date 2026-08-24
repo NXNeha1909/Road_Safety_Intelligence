@@ -1,7 +1,11 @@
 import pymongo
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
-MONGO_URI = "mongodb+srv://yashmittal30062007_db_user:hKHbOnTQYVnFTXKx@cluster0.hwtyuaj.mongodb.net/?appName=Cluster0"
+load_dotenv() # Load variables from .env file
+
+MONGO_URI = os.getenv("MONGO_URI")
 
 client = pymongo.MongoClient(MONGO_URI)
 db = client["road_safety_db"]

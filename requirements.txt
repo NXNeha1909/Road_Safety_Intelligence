@@ -5,3 +5,5 @@ pydantic
 ultralytics
 opencv-python-headless
 huggingface_hub
+pymongo
+dnspython

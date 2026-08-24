@@ -4,9 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
 import time
-import math
 
-from database import init_db, save_pothole, get_all_hazards
+# Now importing our new MongoDB functions
+from database import init_db, save_pothole, get_all_hazards, get_nearby_hazards
 from ai_model import analyze_image_for_pothole
 
 app = FastAPI(title="Road Safety AI API")
@@ -20,35 +20,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize SQLite database when the app starts
+# Initialize MongoDB when the app starts
 init_db()
 
 # Create an uploads folder to store incoming images
 os.makedirs("uploads", exist_ok=True)
 
-# ----------------- HELPER FUNCTION (DISTANCE CALCULATION) -----------------
-def calculate_distance(lat1, lon1, lat2, lon2):
-    """
-    Haversine Formula: Calculates the distance in METERS between two GPS points.
-    """
-    R = 6371.0 # Earth radius in kilometers
-    
-    lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
-    
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-    
-    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    distance_km = R * c
-    
-    return distance_km * 1000 # Convert to meters
-
 # ----------------- API ENDPOINTS -----------------
 
 @app.get("/")
 def home():
-    return {"message": "Welcome to the AI Road Safety Backend! 🚦"}
+    return {"message": "Welcome to the AI Road Safety Backend! 🚦 (Now powered by MongoDB)"}
 
 @app.post("/report-hazard")
 async def report_hazard(
@@ -66,12 +48,12 @@ async def report_hazard(
     # Run AI Model
     ai_result = analyze_image_for_pothole(filename)
     
-    # Save to Database if pothole is detected
+    # Save to MongoDB if pothole is detected
     if ai_result["detected"]:
         save_pothole(lat, lng, ai_result["confidence"], filename)
         return JSONResponse({
             "status": "success",
-            "message": "Pothole detected and saved!",
+            "message": "Pothole detected and saved to MongoDB!",
             "data": ai_result
         })
     else:
@@ -94,21 +76,9 @@ def check_warning(lat: float, lng: float):
     """
     LIVE WARNING API:
     Frontend sends the user's current live GPS location here.
-    Backend calculates if any pothole is within a 200-meter radius.
+    Backend uses MongoDB's native geospatial engine to check 200m radius.
     """
-    hazards = get_all_hazards()
-    nearby_hazards = []
-    
-    for hazard in hazards:
-        # Calculate distance between user and pothole
-        distance = calculate_distance(lat, lng, hazard["latitude"], hazard["longitude"])
-        
-        # If pothole is within 200 meters, add to warning list
-        if distance <= 200:
-            nearby_hazards.append({
-                "distance_meters": round(distance, 2),
-                "confidence": hazard["confidence"]
-            })
+    nearby_hazards = get_nearby_hazards(lat, lng, max_distance_meters=200)
             
     if len(nearby_hazards) > 0:
         return {

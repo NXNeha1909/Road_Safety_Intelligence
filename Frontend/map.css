@@ -1,0 +1,183 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* Navbar */
+
+nav {
+  height: 70px;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 70px;
+}
+
+nav h2 {
+  font-size: 22px;
+}
+
+nav i {
+  color: #38bdf8;
+  margin-right: 8px;
+}
+
+
+/* Map Section */
+
+.map-section {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+.map-section h1 {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.map-section p {
+  color: #64748b;
+  margin-bottom: 25px;
+}
+
+
+/* Counter */
+
+.hazard-counter {
+  margin-bottom: 20px;
+  padding: 12px 25px;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+
+/* Legend */
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+  padding: 10px 20px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-dot.hazard {
+  background: #dc2626;
+}
+
+.legend-dot.user {
+  background: #2563eb;
+}
+
+
+/* Map */
+
+#map {
+  height: 600px;
+  width: 90%;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+
+/* User Location */
+
+.user-location-marker {
+  background: transparent;
+  border: none;
+}
+
+.user-location-dot {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.user-location-dot .core {
+  width: 16px;
+  height: 16px;
+  background: #2563eb;
+  border: 3px solid white;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+
+.user-location-dot .pulse {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: rgba(37,99,235,0.5);
+  border-radius: 50%;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: .7;
+  }
+
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+
+/* Responsive */
+
+@media(max-width:600px){
+
+  .map-section {
+    padding:20px;
+  }
+
+  .map-section h1 {
+    font-size:30px;
+    text-align:center;
+  }
+
+  #map {
+    height:400px;
+    width:95%;
+  }
+
+  .map-legend {
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+}

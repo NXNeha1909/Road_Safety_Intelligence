@@ -570,6 +570,86 @@ button {
   color: var(--blue);
 }
 
+/* HOW IT WORKS */
+
+.how-it-works {
+  padding: 110px 7%;
+  position: relative;
+}
+
+.steps-flow {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.step-card {
+  position: relative;
+  flex: 1 1 220px;
+  max-width: 250px;
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--card);
+  backdrop-filter: blur(15px);
+  transition: 0.3s;
+}
+
+.step-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(39, 169, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.step-number {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.step-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 20px;
+  color: var(--blue);
+  background: rgba(39, 169, 255, 0.1);
+  border: 1px solid rgba(39, 169, 255, 0.25);
+}
+
+.step-card h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.step-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.step-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  font-size: 18px;
+  opacity: 0.6;
+}
+
 /* ABOUT */
 
 .about {
@@ -697,6 +777,20 @@ footer {
     flex-direction: column;
     text-align: center;
   }
+
+  .steps-flow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step-card {
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .step-arrow {
+    transform: rotate(90deg);
+  }
 }
 
 @media (max-width: 550px) {
@@ -728,7 +822,8 @@ footer {
     display: none;
   }
 
-  .features {
+  .features,
+  .how-it-works {
     padding: 80px 6%;
   }
 

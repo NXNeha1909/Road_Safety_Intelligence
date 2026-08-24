@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>DriveSafe AI | Road Hazard Detection</title>
@@ -13,385 +12,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
-
-    <style>
-      /* ================================
-         DRIVE SAFE AI - UI ENHANCEMENTS
-         ================================ */
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f7f9;
-        color: #17202a;
-      }
-
-      /* Navbar */
-
-      nav {
-        height: 72px;
-        display: flex;
-        align-items: center;
-        padding: 0 7%;
-        background: #ffffff;
-        border-bottom: 1px solid #e5e9ec;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 24px;
-        font-weight: 700;
-        color: #152c3d;
-      }
-
-      .logo i {
-        color: #1e9e68;
-        font-size: 26px;
-      }
-
-      /* Main section */
-
-      .upload-section {
-        min-height: calc(100vh - 72px);
-        padding: 55px 7% 40px;
-        text-align: center;
-      }
-
-      .upload-section h1 {
-        margin: 0;
-        font-size: clamp(32px, 4vw, 48px);
-        color: #152c3d;
-        letter-spacing: -1px;
-      }
-
-      .upload-section > p {
-        margin: 12px auto 38px;
-        max-width: 650px;
-        font-size: 17px;
-        color: #66737d;
-      }
-
-      /* Camera card */
-
-      .camera-card {
-        width: min(850px, 100%);
-        margin: 0 auto;
-        padding: 24px;
-        background: #ffffff;
-        border-radius: 22px;
-        box-shadow: 0 12px 35px rgba(21, 44, 61, 0.1);
-        border: 1px solid #e8edef;
-      }
-
-      .camera-box {
-        position: relative;
-        width: 100%;
-        height: 420px;
-        overflow: hidden;
-        border-radius: 16px;
-        background: #17202a;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #cameraPreview {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        background: #17202a;
-      }
-
-      .camera-overlay {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-      }
-
-      .camera-overlay i {
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(6px);
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 27px;
-      }
-
-      .camera-status {
-        margin: 18px 0;
-        padding: 11px 16px;
-        border-radius: 10px;
-        background: #f1f6f4;
-        color: #39745a;
-        font-size: 14px;
-        font-weight: 600;
-      }
-
-      .camera-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-
-      .camera-buttons button {
-        border: none;
-        padding: 13px 24px;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.25s ease;
-      }
-
-      #startCamera {
-        background: #172f41;
-        color: white;
-      }
-
-      #startCamera:hover {
-        background: #21465d;
-        transform: translateY(-2px);
-      }
-
-      #captureBtn {
-        background: #1e9e68;
-        color: white;
-      }
-
-      #captureBtn:hover {
-        background: #178455;
-        transform: translateY(-2px);
-      }
-
-      .camera-buttons i {
-        margin-right: 7px;
-      }
-
-      /* ================================
-         HAZARD DETECTION SHOWCASE
-         ================================ */
-
-      .hazard-section {
-        max-width: 1100px;
-        margin: 65px auto 0;
-      }
-
-      .hazard-heading {
-        margin-bottom: 25px;
-      }
-
-      .hazard-heading h2 {
-        margin: 0;
-        color: #152c3d;
-        font-size: 28px;
-      }
-
-      .hazard-heading p {
-        margin: 8px 0 0;
-        color: #72808a;
-        font-size: 15px;
-      }
-
-      .hazard-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-      }
-
-      .hazard-card {
-        position: relative;
-        overflow: hidden;
-        min-height: 260px;
-        border-radius: 18px;
-        background: #17202a;
-        box-shadow: 0 10px 25px rgba(21, 44, 61, 0.12);
-      }
-
-      .hazard-card img {
-        width: 100%;
-        height: 260px;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.4s ease;
-      }
-
-      .hazard-card:hover img {
-        transform: scale(1.06);
-      }
-
-      .hazard-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          to top,
-          rgba(10, 20, 27, 0.9),
-          rgba(10, 20, 27, 0.05) 65%
-        );
-      }
-
-      .hazard-info {
-        position: absolute;
-        z-index: 2;
-        left: 18px;
-        right: 18px;
-        bottom: 16px;
-        text-align: left;
-        color: white;
-      }
-
-      .hazard-info h3 {
-        margin: 0 0 5px;
-        font-size: 18px;
-      }
-
-      .hazard-info p {
-        margin: 0;
-        font-size: 13px;
-        color: #e1e7ea;
-      }
-
-      .detected-badge {
-        position: absolute;
-        z-index: 3;
-        top: 14px;
-        right: 14px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 11px;
-        border-radius: 20px;
-        background: rgba(218, 45, 45, 0.92);
-        color: white;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .detected-badge i {
-        font-size: 10px;
-      }
-
-      /* ================================
-         DETECTION LINE
-         ================================ */
-
-      .safety-message {
-        max-width: 900px;
-        margin: 65px auto 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 18px;
-        color: #152c3d;
-      }
-
-      .safety-line {
-        height: 1px;
-        flex: 1;
-        background: linear-gradient(
-          to right,
-          transparent,
-          #b9c8cf
-        );
-      }
-
-      .safety-line.right {
-        background: linear-gradient(
-          to left,
-          transparent,
-          #b9c8cf
-        );
-      }
-
-      .safety-message span {
-        white-space: nowrap;
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: 0.4px;
-      }
-
-      .safety-message i {
-        color: #1e9e68;
-        margin-right: 6px;
-      }
-
-      /* Hidden canvas */
-
-      #canvas {
-        display: none;
-      }
-
-      /* Responsive */
-
-      @media (max-width: 850px) {
-        .hazard-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .hazard-card {
-          max-width: 500px;
-          width: 100%;
-          margin: auto;
-        }
-
-        .camera-box {
-          height: 350px;
-        }
-      }
-
-      @media (max-width: 600px) {
-        nav {
-          padding: 0 5%;
-        }
-
-        .upload-section {
-          padding: 40px 5% 30px;
-        }
-
-        .logo {
-          font-size: 21px;
-        }
-
-        .camera-card {
-          padding: 15px;
-        }
-
-        .camera-box {
-          height: 280px;
-        }
-
-        .camera-buttons {
-          flex-direction: column;
-        }
-
-        .camera-buttons button {
-          width: 100%;
-        }
-
-        .safety-line {
-          display: none;
-        }
-
-        .safety-message span {
-          white-space: normal;
-        }
-      }
-    </style>
   </head>
 
   <body>
@@ -399,99 +19,140 @@
 
     <nav>
       <div class="logo">
-        <i class="fa-solid fa-road"></i>
-        DriveSafe AI
+        <div class="logo-icon">
+          <i class="fa-solid fa-road"></i>
+        </div>
+        <span>Drive<span>Safe</span> AI</span>
+      </div>
+
+      <div class="nav-status">
+        <span class="dot"></span>
+        System Online
       </div>
     </nav>
 
     <!-- ================= DETECTION SECTION ================= -->
 
     <section class="upload-section">
+      <div class="badge-pill">
+        <i class="fa-solid fa-brain"></i>
+        AI Hazard Detection
+      </div>
 
-      <h1>AI Road Hazard Detection</h1>
+      <h1>Real-Time Road Hazard Detection</h1>
 
-      <p>
-        Capture road images or videos and let DriveSafe AI identify
-        potential hazards before they become dangerous.
+      <p class="subtitle">
+        Capture road images manually, or switch on Driving Mode and let
+        DriveSafe AI continuously scan the road ahead for potholes and
+        other hazards while you drive.
       </p>
 
       <!-- Camera -->
 
-      <div class="camera-card">
-
+      <div class="camera-card glass">
         <div class="camera-box">
+          <video id="cameraPreview" autoplay playsinline muted></video>
 
-          <video
-            id="cameraPreview"
-            autoplay
-            playsinline
-          ></video>
-
-          <div class="camera-overlay">
+          <div class="camera-overlay" id="cameraOverlay">
             <i class="fa-solid fa-video"></i>
           </div>
 
+          <!-- Shows current mode: MANUAL MODE / DRIVING MODE - LIVE -->
+          <div class="mode-badge" id="modeBadge">MANUAL MODE</div>
+
+          <!-- Blinking indicator, only visible while Driving Mode is active -->
+          <div class="rec-indicator" id="recIndicator" hidden>
+            <span class="dot"></span>
+            LIVE
+          </div>
         </div>
 
-        <div
-          class="camera-status"
-          id="cameraStatus"
-        >
-          Camera not started
-        </div>
+        <div class="camera-status" id="cameraStatus">Camera not started</div>
 
+        <!-- Manual mode controls (unchanged behavior) -->
         <div class="camera-buttons">
-
-          <button
-            id="startCamera"
-            type="button"
-          >
+          <button id="startCamera" type="button">
             <i class="fa-solid fa-camera"></i>
             Start Camera
           </button>
 
-          <button
-            id="captureBtn"
-            type="button"
-          >
+          <button id="captureBtn" type="button">
             <i class="fa-solid fa-circle"></i>
             Capture
           </button>
-
         </div>
 
+        <div class="divider"><span>or go hands-free</span></div>
+
+        <!-- Driving mode controls -->
+        <div class="driving-buttons">
+          <button id="startDriving" class="btn-drive" type="button">
+            <i class="fa-solid fa-car"></i>
+            Start Driving Mode
+          </button>
+
+          <button id="stopDriving" class="btn-stop" type="button" hidden>
+            <i class="fa-solid fa-stop"></i>
+            Stop Driving Mode
+          </button>
+        </div>
+
+        <!-- Live stats, shown only while Driving Mode is active -->
+        <div class="driving-stats glass" id="drivingStats" hidden>
+
+          <!-- Live monitoring header: makes the panel read like a real
+               vehicle safety system rather than a plain stats grid -->
+          <div class="driving-status-header">
+            <div class="driving-status-left">
+              <span class="live-dot"></span>
+              <span class="driving-status-title">
+                <i class="fa-solid fa-car"></i>
+                DRIVING MODE ACTIVE
+              </span>
+            </div>
+
+            <div class="driving-status-right">
+              <i class="fa-solid fa-satellite-dish"></i>
+              Live Monitoring
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat">
+              <span class="stat-label">GPS</span>
+              <span class="stat-value" id="gpsStatus">Locating…</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Frames Analysed</span>
+              <span class="stat-value" id="framesSent">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Hazards Found</span>
+              <span class="stat-value" id="hazardsFound">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Next Scan</span>
+              <span class="stat-value" id="nextScan">--</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Hidden Canvas for capturing frame -->
-
-      <canvas id="canvas"></canvas>
-
+      <!-- Hidden Canvas used to grab frames from the video stream -->
+      <canvas id="canvas" hidden></canvas>
 
       <!-- ================= HAZARD SHOWCASE ================= -->
 
       <div class="hazard-section">
-
         <div class="hazard-heading">
-
           <h2>What DriveSafe AI Detects</h2>
-
-          <p>
-            Intelligent detection for common road hazards
-          </p>
-
+          <p>Intelligent detection for common road hazards</p>
         </div>
 
-
         <div class="hazard-grid">
-
           <!-- Pothole -->
-
           <div class="hazard-card">
-
-            <img
-              src="pothole_detection.jpg"
-              alt="Road with pothole hazard"
-            />
+            <img src="pothole_detection.jpg" alt="Road with pothole hazard" />
 
             <div class="detected-badge">
               <i class="fa-solid fa-triangle-exclamation"></i>
@@ -499,29 +160,17 @@
             </div>
 
             <div class="hazard-info">
-
               <h3>
                 <i class="fa-solid fa-circle-exclamation"></i>
                 Pothole
               </h3>
-
-              <p>
-                Road surface damage identified
-              </p>
-
+              <p>Road surface damage identified</p>
             </div>
-
           </div>
 
-
           <!-- Water Logging -->
-
           <div class="hazard-card">
-
-            <img
-              src="water_logging.jpeg"
-              alt="Water logged road"
-            />
+            <img src="water_logging.jpeg" alt="Water logged road" />
 
             <div class="detected-badge">
               <i class="fa-solid fa-triangle-exclamation"></i>
@@ -529,29 +178,17 @@
             </div>
 
             <div class="hazard-info">
-
               <h3>
                 <i class="fa-solid fa-droplet"></i>
                 Water Logging
               </h3>
-
-              <p>
-                Standing water detected on roadway
-              </p>
-
+              <p>Standing water detected on roadway</p>
             </div>
-
           </div>
 
-
           <!-- Construction -->
-
           <div class="hazard-card">
-
-            <img
-              src="constuction.jpeg"
-              alt="Road construction site"
-            />
+            <img src="constuction.jpeg" alt="Road construction site" />
 
             <div class="detected-badge">
               <i class="fa-solid fa-triangle-exclamation"></i>
@@ -559,46 +196,51 @@
             </div>
 
             <div class="hazard-info">
-
               <h3>
                 <i class="fa-solid fa-person-digging"></i>
                 Road Construction
               </h3>
-
-              <p>
-                Construction activity detected ahead
-              </p>
-
+              <p>Construction activity detected ahead</p>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
 
       <!-- ================= SAFETY MESSAGE ================= -->
 
       <div class="safety-message">
-
         <div class="safety-line"></div>
-
         <span>
           <i class="fa-solid fa-shield-halved"></i>
           Detects every hazard, Protects your safety
         </span>
-
         <div class="safety-line right"></div>
-
       </div>
-
     </section>
 
+    <!-- ================= WARNING BANNER (pothole alert) ================= -->
+    <!-- Positioned fixed so it floats above the page regardless of scroll -->
+
+    <div id="warningBanner" class="warning-banner" hidden>
+      <div class="warning-content">
+        <div class="warning-icon">⚠️</div>
+
+        <div class="warning-text">
+          <h2>POTHOLE DETECTED AHEAD</h2>
+          <div class="warning-meta">
+            <span id="warnConfidence">Confidence: --</span>
+            <span id="warnTime">Time: --</span>
+            <span id="warnLocation">📍 --</span>
+          </div>
+        </div>
+
+        <button id="dismissWarning" class="dismiss-btn" type="button" aria-label="Dismiss">
+          &times;
+        </button>
+      </div>
+    </div>
 
     <!-- Keep existing JavaScript functionality -->
-
     <script src="app.js"></script>
-
   </body>
 </html>

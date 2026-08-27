@@ -88,4 +88,4 @@ async function checkLiveWarning(currentLat, currentLng) {
 // setInterval(() => { get_location_and_call_checkLiveWarning() }, 5000);
 ```
 
-Good luck! Build an awesome UI! 🚀
+

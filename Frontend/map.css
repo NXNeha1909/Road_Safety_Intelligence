@@ -18,6 +18,7 @@ nav {
   color: white;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 70px;
 }
 
@@ -28,6 +29,24 @@ nav h2 {
 nav i {
   color: #38bdf8;
   margin-right: 8px;
+}
+
+.nav-detect-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 16px;
+  border-radius: 30px;
+  transition: 0.2s ease;
+}
+
+.nav-detect-link:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 
@@ -156,6 +175,167 @@ nav i {
   }
 }
 
+
+/* Navigate Only Mode (Task 3) */
+
+.nav-mode-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.nav-mode-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  font-weight: 600;
+  font-size: 14px;
+  color: #334155;
+}
+
+.nav-mode-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.nav-mode-status.active .nav-mode-dot {
+  background: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);
+}
+
+.btn-nav-start,
+.btn-nav-stop {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.btn-nav-start {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-nav-start:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.btn-nav-start:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+.btn-nav-stop {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.btn-nav-stop:hover {
+  background: #fecaca;
+}
+
+.nav-mode-hint {
+  color: #64748b;
+  font-size: 13px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Hazard resolve buttons (Task 6, inside Leaflet popups) */
+
+.hazard-popup-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.hazard-popup-actions button {
+  flex: 1;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hazard-fixed-btn {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.hazard-fixed-btn:hover {
+  background: #bbf7d0;
+}
+
+.hazard-wrong-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.hazard-wrong-btn:hover {
+  background: #fecaca;
+}
+
+/* Warning banner shown during Navigate Only Mode */
+
+.nav-warning-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-140%);
+  z-index: 999;
+  width: min(520px, 92vw);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff4d5e, #b41428);
+  color: white;
+  padding: 16px 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.nav-warning-banner.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-warning-icon {
+  font-size: 22px;
+}
+
+.nav-warning-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.nav-warning-dismiss {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
 
 /* Responsive */
 

@@ -369,6 +369,162 @@ nav {
   transform: translateY(-2px);
 }
 
+/* Manual report + navigate-only entry points */
+
+.btn-report {
+  background: rgba(255, 173, 66, 0.15);
+  border: 1px solid rgba(255, 173, 66, 0.4) !important;
+  color: var(--orange);
+}
+
+.btn-report:hover {
+  background: rgba(255, 173, 66, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-navigate-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.btn-navigate-link:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-2px);
+}
+
+/* Manual report modal */
+
+.report-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 9, 17, 0.72);
+  padding: 20px;
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.report-modal-card {
+  width: min(420px, 100%);
+  border-radius: 18px;
+  padding: 26px;
+  border: 1px solid var(--border);
+}
+
+.report-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.report-modal-header h2 {
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--orange);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: var(--white);
+}
+
+.report-modal-sub {
+  color: var(--muted);
+  font-size: 13.5px;
+  margin-bottom: 18px;
+}
+
+#reportForm {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#reportForm label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+#reportForm select,
+#reportForm textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+#reportForm select:focus,
+#reportForm textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.report-modal-status {
+  min-height: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.btn-submit-report {
+  margin-top: 10px;
+  border: none;
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #06231a;
+  background: var(--orange);
+  transition: 0.25s ease;
+}
+
+.btn-submit-report:hover {
+  transform: translateY(-2px);
+}
+
+.btn-submit-report:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Driving stats panel - styled like a live vehicle safety dashboard */
 
 .driving-stats {
@@ -820,4 +976,8 @@ nav {
     width: 94vw;
     padding: 14px 16px;
   }
+}
+
+.report-modal[hidden] {
+  display: none !important;
 }

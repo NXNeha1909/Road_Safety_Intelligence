@@ -27,6 +27,10 @@
 
         DriveSafe AI
       </h2>
+      <a href="detection.html" class="nav-detect-link">
+        <i class="fa-solid fa-camera"></i>
+        Detect Now
+      </a>
     </nav>
 
     <section class="map-section">
@@ -55,8 +59,35 @@
         <button id="recenterBtn" style="background: #152c3d; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold;"><i class="fa-solid fa-location-crosshairs"></i> My Location</button>
       </div>
 
+      <!-- Navigate Only Mode (Task 3): GPS + hazard warnings, camera stays off -->
+      <div class="nav-mode-bar">
+        <div class="nav-mode-status" id="navModeStatus">
+          <span class="nav-mode-dot" id="navModeDot"></span>
+          <span id="navModeLabel">Navigate Only Mode: Off</span>
+        </div>
+        <button id="startNavBtn" class="btn-nav-start" type="button" disabled>
+          <i class="fa-solid fa-location-arrow"></i>
+          Navigate Without Camera
+        </button>
+        <button id="stopNavBtn" class="btn-nav-stop" type="button" hidden>
+          <i class="fa-solid fa-stop"></i>
+          Stop Navigation
+        </button>
+      </div>
+      <p class="nav-mode-hint" id="navModeHint">Search a route first, then start navigation to get hazard warnings without using your camera.</p>
+
       <div id="map"></div>
     </section>
+
+    <!-- Hazard warning banner for Navigate Only Mode -->
+    <div id="navWarningBanner" class="nav-warning-banner" hidden>
+      <div class="nav-warning-icon">⚠️</div>
+      <div class="nav-warning-text">
+        <strong>Hazard ahead</strong>
+        <span id="navWarningMessage">Slow down — a reported hazard is near your route.</span>
+      </div>
+      <button id="dismissNavWarning" class="nav-warning-dismiss" type="button" aria-label="Dismiss">&times;</button>
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!-- Routing JS -->

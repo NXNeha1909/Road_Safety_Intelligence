@@ -311,7 +311,7 @@
       let userMarkerMini = null;
 
       // Fetch all potholes and plot as red pins
-      fetch('https://road-safety-intelligence-backend-38aw.onrender.com');
+      fetch('https://road-safety-intelligence-backend-38aw.onrender.com')
         .then(res => res.json())
         .then(data => {
           data.data.forEach(h => {

@@ -1,4 +1,4 @@
-const API_BASE = "https://road-safety-intelligence-backend.onrender.com";
+const API_BASE = "http://127.0.0.1:8000";
 
 // Camera Elements
 
@@ -10,6 +10,8 @@ const canvas = document.getElementById("canvas");
 
 const cameraOverlay = document.getElementById("cameraOverlay");
 const status = document.getElementById("cameraStatus");
+const modeBadge = document.getElementById("modeBadge");
+const recIndicator = document.getElementById("recIndicator");
 
 // Driving Mode Elements
 
@@ -149,25 +151,40 @@ function voiceAlert() {
 // Warning Banner
 
 function showWarning(confidence, location) {
-  warnConfidence.innerHTML = `Confidence: ${Math.round(confidence * 100)}%`;
+  warnConfidence.innerHTML = `Confidence: ${Math.round((confidence || 0) * 100)}%`;
 
   warnTime.innerHTML = `Time: ${new Date().toLocaleTimeString()}`;
 
   warnLocation.innerHTML = `📍 ${location}`;
 
+  // Un-hide first, then add "show" on the next frame so the CSS
+  // transition/animation (defined on .warning-banner.show) actually runs.
   warningBanner.hidden = false;
+
+  requestAnimationFrame(() => {
+    warningBanner.classList.add("show");
+  });
 
   voiceAlert();
 
   clearTimeout(warningTimer);
 
   warningTimer = setTimeout(() => {
-    warningBanner.hidden = true;
+    hideWarning();
   }, 6000);
 }
 
+function hideWarning() {
+  warningBanner.classList.remove("show");
+  // Wait for the slide-out transition before actually hiding the element.
+  setTimeout(() => {
+    warningBanner.hidden = true;
+  }, 450);
+}
+
 dismissWarning?.addEventListener("click", () => {
-  warningBanner.hidden = true;
+  clearTimeout(warningTimer);
+  hideWarning();
 });
 
 // Manual Camera
@@ -193,29 +210,48 @@ captureBtn?.addEventListener("click", (e) => {
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(async (position) => {
-    const lat = position.coords.latitude;
+  const originalLabel = captureBtn.innerHTML;
+  captureBtn.disabled = true;
+  captureBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Analysing...`;
+  status.innerHTML = "🧠 Analysing captured frame...";
 
-    const lng = position.coords.longitude;
+  const resetButton = () => {
+    captureBtn.disabled = false;
+    captureBtn.innerHTML = originalLabel;
+  };
 
-    const image = await captureImage();
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
-    sendImage(image, lat, lng).then((data) => {
-      console.log(data);
+      try {
+        const image = await captureImage();
+        const data = await sendImage(image, lat, lng);
 
-      if (data.status === "success") {
-        status.innerHTML = "⚠️ Pothole Detected";
+        if (data.status === "success") {
+          status.innerHTML = "⚠️ Pothole Detected";
 
-        showWarning(
-          data.data?.[0]?.confidence || 0,
-
-          `${lat.toFixed(4)}, ${lng.toFixed(4)}`,
-        );
-      } else {
-        status.innerHTML = "✅ Road Safe";
+          showWarning(
+            data.data?.confidence || 0,
+            `${lat.toFixed(4)}, ${lng.toFixed(4)}`,
+          );
+        } else {
+          status.innerHTML = "✅ Road Safe";
+        }
+      } catch (error) {
+        console.log(error);
+        status.innerHTML = "🔴 Could not reach the server. Please try again.";
+      } finally {
+        resetButton();
       }
-    });
-  });
+    },
+    (error) => {
+      console.log(error);
+      status.innerHTML = "🔴 Couldn't get your location. Enable GPS and try again.";
+      resetButton();
+    },
+  );
 });
 
 // GPS Tracking
@@ -247,7 +283,8 @@ function startGPS() {
         .then(data => {
             if(data.warning) {
                 status.innerHTML = "🚨 EXISTING HAZARD AHEAD";
-                showWarning(0.95, "NEARBY EXISTING HAZARD");
+                const topHazard = data.hazards_nearby?.[0];
+                showWarning(topHazard?.confidence ?? 0.9, "NEARBY EXISTING HAZARD");
             }
         }).catch(e => console.log(e));
   }, 4000);
@@ -301,7 +338,7 @@ async function drivingCapture() {
       status.innerHTML = "⚠️ Pothole Detected Ahead";
 
       showWarning(
-        data.data?.[0]?.confidence || 0,
+        data.data?.confidence || 0,
 
         `${currentLocation.lat.toFixed(4)}, ${currentLocation.lng.toFixed(4)}`,
       );
@@ -310,6 +347,7 @@ async function drivingCapture() {
     }
   } catch (error) {
     console.log(error);
+    status.innerHTML = "🔴 Frame upload failed — retrying next scan.";
   }
 
   sendingFrame = false;
@@ -349,6 +387,9 @@ startDrivingBtn?.addEventListener(
 
     status.innerHTML = "🚗 Driving Mode Active";
 
+    if (modeBadge) modeBadge.textContent = "DRIVING MODE - LIVE";
+    if (recIndicator) recIndicator.hidden = false;
+
     startGPS();
 
     scheduleCapture();
@@ -374,5 +415,88 @@ stopDrivingBtn?.addEventListener(
     drivingStats.hidden = true;
 
     status.innerHTML = "🟢 Camera Active";
+
+    if (modeBadge) modeBadge.textContent = "MANUAL MODE";
+    if (recIndicator) recIndicator.hidden = true;
   },
 );
+
+// ================= MANUAL HAZARD REPORTING (Task 6) =================
+
+const reportHazardBtn = document.getElementById("reportHazardBtn");
+const reportModal = document.getElementById("reportModal");
+const reportForm = document.getElementById("reportForm");
+const cancelReportBtn = document.getElementById("cancelReportBtn");
+const reportStatus = document.getElementById("reportStatus");
+
+function openReportModal() {
+  if (!reportModal) return;
+  reportStatus.textContent = "";
+  reportModal.hidden = false;
+}
+
+function closeReportModal() {
+  if (!reportModal) return;
+  reportModal.hidden = true;
+}
+
+reportHazardBtn?.addEventListener("click", openReportModal);
+cancelReportBtn?.addEventListener("click", closeReportModal);
+
+reportForm?.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const submitBtn = reportForm.querySelector('button[type="submit"]');
+  const hazardType = document.getElementById("reportType").value;
+  const note = document.getElementById("reportNote").value;
+
+  if (!navigator.geolocation) {
+    reportStatus.textContent = "Geolocation isn't supported on this device.";
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
+  reportStatus.textContent = "Getting your current location...";
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      const formData = new FormData();
+      formData.append("lat", lat);
+      formData.append("lng", lng);
+      formData.append("hazard_type", hazardType);
+      formData.append("note", note);
+
+      try {
+        const res = await fetch(`${API_BASE}/report-hazard-manual`, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === "success") {
+          reportStatus.textContent = "✅ Hazard reported — thank you!";
+          reportForm.reset();
+          setTimeout(closeReportModal, 1200);
+        } else {
+          reportStatus.textContent = "🔴 Couldn't submit the report. Please try again.";
+        }
+      } catch (error) {
+        console.log(error);
+        reportStatus.textContent = "🔴 Couldn't reach the server. Please try again.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = "Submit Report";
+      }
+    },
+    (error) => {
+      console.log(error);
+      reportStatus.textContent = "🔴 Couldn't get your location. Enable GPS and try again.";
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = "Submit Report";
+    },
+  );
+});

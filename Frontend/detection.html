@@ -99,6 +99,21 @@
           </button>
         </div>
 
+        <div class="divider"><span>spotted something now?</span></div>
+
+        <!-- Manual reporting (Task 6) -->
+        <div class="driving-buttons">
+          <button id="reportHazardBtn" class="btn-report" type="button">
+            <i class="fa-solid fa-flag"></i>
+            Report Hazard Manually
+          </button>
+
+          <a href="map.html?mode=navigate" class="btn-navigate-link" type="button">
+            <i class="fa-solid fa-route"></i>
+            Navigate Without Camera
+          </a>
+        </div>
+
         <!-- Live stats, shown only while Driving Mode is active -->
         <div class="driving-stats glass" id="drivingStats" hidden>
 
@@ -247,6 +262,36 @@
       </div>
     </div>
 
+    <!-- ================= MANUAL REPORT MODAL ================= -->
+
+    <div id="reportModal" class="report-modal" hidden>
+      <div class="report-modal-card glass">
+        <div class="report-modal-header">
+          <h2><i class="fa-solid fa-flag"></i> Report a Hazard</h2>
+          <button id="cancelReportBtn" class="modal-close" type="button" aria-label="Close">&times;</button>
+        </div>
+
+        <p class="report-modal-sub">We'll use your current GPS location to pin this on the map.</p>
+
+        <form id="reportForm">
+          <label for="reportType">Hazard type</label>
+          <select id="reportType" required>
+            <option value="pothole">Pothole</option>
+            <option value="water_logging">Water Logging</option>
+            <option value="construction">Road Construction</option>
+            <option value="other">Other</option>
+          </select>
+
+          <label for="reportNote">Note (optional)</label>
+          <textarea id="reportNote" placeholder="e.g. Large pothole near the signal" rows="3"></textarea>
+
+          <div id="reportStatus" class="report-modal-status"></div>
+
+          <button type="submit" class="btn-submit-report">Submit Report</button>
+        </form>
+      </div>
+    </div>
+
     <!-- Keep existing JavaScript functionality -->
 
     <script src="app.js"></script>
@@ -266,7 +311,7 @@
       let userMarkerMini = null;
 
       // Fetch all potholes and plot as red pins
-      fetch('https://road-safety-intelligence-backend.onrender.com/hazards')
+      fetch('http://127.0.0.1:8000/hazards')
         .then(res => res.json())
         .then(data => {
           data.data.forEach(h => {

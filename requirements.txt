@@ -7,3 +7,4 @@ opencv-python-headless
 huggingface_hub
 pymongo
 dnspython
+python-dotenv

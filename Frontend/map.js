@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://road-safety-intelligence-backend-38aw.onrender.com";
 
 const hazardIcon = L.icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/564/564619.png",

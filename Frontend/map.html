@@ -52,14 +52,14 @@
         </span>
       </div>
 
-      <!-- CUSTOM MAP CONTROLS -->
+     
       <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap;">
         <input type="text" id="destInput" placeholder="Enter destination (e.g. Connaught Place)" style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px;" />
         <button id="routeBtn" style="background: #1e9e68; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold;"><i class="fa-solid fa-route"></i> Search Route</button>
         <button id="recenterBtn" style="background: #152c3d; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold;"><i class="fa-solid fa-location-crosshairs"></i> My Location</button>
       </div>
 
-      <!-- Navigate Only Mode (Task 3): GPS + hazard warnings, camera stays off -->
+    
       <div class="nav-mode-bar">
         <div class="nav-mode-status" id="navModeStatus">
           <span class="nav-mode-dot" id="navModeDot"></span>
@@ -79,7 +79,7 @@
       <div id="map"></div>
     </section>
 
-    <!-- Hazard warning banner for Navigate Only Mode -->
+
     <div id="navWarningBanner" class="nav-warning-banner" hidden>
       <div class="nav-warning-icon">⚠️</div>
       <div class="nav-warning-text">
@@ -90,7 +90,7 @@
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- Routing JS -->
+    
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 

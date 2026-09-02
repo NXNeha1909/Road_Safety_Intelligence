@@ -1,10 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-/* ================================
-   DESIGN TOKENS
-   (matches Frontend/style.css so the
-   whole app shares one design system)
-   ================================ */
+
 
 :root {
   --bg: #07111f;
@@ -38,9 +34,6 @@ body {
   overflow-x: hidden;
 }
 
-/* ================================
-   NAVBAR
-   ================================ */
 
 nav {
   height: 82px;
@@ -101,9 +94,7 @@ nav {
   box-shadow: 0 0 8px var(--green);
 }
 
-/* ================================
-   HERO / INTRO
-   ================================ */
+
 
 .upload-section {
   min-height: calc(100vh - 82px);
@@ -140,9 +131,6 @@ nav {
   color: var(--muted);
 }
 
-/* ================================
-   GLASS CARD (shared)
-   ================================ */
 
 .glass {
   background: var(--card);
@@ -151,9 +139,7 @@ nav {
   border-radius: 22px;
 }
 
-/* ================================
-   CAMERA CARD
-   ================================ */
+
 
 .camera-card {
   width: min(850px, 100%);
@@ -229,7 +215,7 @@ nav {
   box-shadow: 0 0 18px rgba(39, 169, 255, 0.5);
 }
 
-/* Blinking REC indicator, top-right of the camera box, shown only in Driving Mode */
+
 
 .rec-indicator {
   position: absolute;
@@ -262,7 +248,7 @@ nav {
   50% { opacity: 0.35; transform: scale(0.75); }
 }
 
-/* Status line */
+
 
 .camera-status {
   margin: 18px 0;
@@ -276,7 +262,7 @@ nav {
   text-align: center;
 }
 
-/* Buttons */
+
 
 .camera-buttons,
 .driving-buttons {
@@ -324,7 +310,7 @@ nav {
   transform: translateY(-2px);
 }
 
-/* Divider between manual controls and driving mode controls */
+
 
 .divider {
   display: flex;
@@ -346,7 +332,7 @@ nav {
   background: var(--border);
 }
 
-/* Driving mode buttons */
+
 
 .btn-drive {
   background: linear-gradient(135deg, #1599ec, #075ca4);
@@ -369,7 +355,7 @@ nav {
   transform: translateY(-2px);
 }
 
-/* Manual report + navigate-only entry points */
+
 
 .btn-report {
   background: rgba(255, 173, 66, 0.15);
@@ -403,7 +389,7 @@ nav {
   transform: translateY(-2px);
 }
 
-/* Manual report modal */
+
 
 .report-modal {
   position: fixed;
@@ -525,7 +511,7 @@ nav {
   transform: none;
 }
 
-/* Driving stats panel - styled like a live vehicle safety dashboard */
+
 
 .driving-stats {
   margin-top: 20px;
@@ -542,7 +528,7 @@ nav {
     inset 0 0 30px rgba(39, 169, 255, 0.05);
 }
 
-/* Header row: "DRIVING MODE ACTIVE" + live monitoring badge */
+
 
 .driving-status-header {
   display: flex;
@@ -576,7 +562,7 @@ nav {
   color: var(--blue);
 }
 
-/* Pulsing "live" dot - reuses the same pulse timing as the REC indicator */
+
 
 .live-dot {
   width: 10px;
@@ -606,7 +592,7 @@ nav {
   font-size: 10px;
 }
 
-/* Stat cards grid */
+
 
 .stats-grid {
   display: grid;
@@ -653,9 +639,7 @@ nav {
   color: var(--danger);
 }
 
-/* ================================
-   WARNING BANNER (pothole alert)
-   ================================ */
+
 
 .warning-banner {
   position: fixed;
@@ -760,9 +744,7 @@ nav {
   opacity: 1;
 }
 
-/* ================================
-   HAZARD DETECTION SHOWCASE
-   ================================ */
+
 
 .hazard-section {
   max-width: 1100px;
@@ -866,9 +848,7 @@ nav {
   font-size: 10px;
 }
 
-/* ================================
-   SAFETY MESSAGE
-   ================================ */
+
 
 .safety-message {
   max-width: 900px;
@@ -902,15 +882,11 @@ nav {
   margin-right: 6px;
 }
 
-/* Hidden canvas used only for frame capture */
 
 #canvas {
   display: none;
 }
 
-/* ================================
-   RESPONSIVE
-   ================================ */
 
 @media (max-width: 850px) {
   .hazard-grid {

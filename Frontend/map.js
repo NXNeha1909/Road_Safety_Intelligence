@@ -16,20 +16,19 @@ const userIcon = L.divIcon({
   iconAnchor: [8, 8],
 });
 
-// Create Map
 
 const map = L.map("map").setView([28.6139, 77.209], 12);
 
 const hazardPoints = [];
-const hazardMarkers = {}; // id -> L.marker, so we can remove one after it's resolved
+const hazardMarkers = {}; 
 
-// Map Layer
+
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "© OpenStreetMap contributors",
 }).addTo(map);
 
-// Load Hazards
+
 
 function hazardPopupHtml(hazard) {
   const typeLabel = (hazard.hazard_type || "pothole").replace("_", " ");
@@ -127,7 +126,7 @@ function loadHazards() {
 
 loadHazards();
 
-// User Location
+
 let userMarker = null;
 let globalUserLat = 0;
 let globalUserLng = 0;
@@ -185,13 +184,12 @@ if (navigator.geolocation) {
 
 console.log("Map Loaded");
 
-// Point 1: Custom Destination + Route Logic (Hiding Default UI)
 let routingControl = null;
 let routeReady = false;
 
 const startNavBtn = document.getElementById("startNavBtn");
 
-// Recenter Button Logic
+
 document.getElementById('recenterBtn').addEventListener('click', () => {
     if (globalUserLat !== 0) {
         map.setView([globalUserLat, globalUserLng], 15);
@@ -200,7 +198,7 @@ document.getElementById('recenterBtn').addEventListener('click', () => {
     }
 });
 
-// Custom Search Box Logic
+
 const routeBtn = document.getElementById('routeBtn');
 
 routeBtn.addEventListener('click', () => {
@@ -217,7 +215,7 @@ routeBtn.addEventListener('click', () => {
     routeBtn.disabled = true;
     routeBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Searching...`;
 
-    // 1. Fetch Coordinates for the entered city/place using Nominatim API
+
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(dest)}`)
     .then(res => res.json())
     .then(data => {
@@ -232,13 +230,13 @@ routeBtn.addEventListener('click', () => {
             map.removeControl(routingControl);
         }
 
-        // 2. Draw Route but HIDE the white box (show: false)
+        
         routingControl = L.Routing.control({
             waypoints: [
                 L.latLng(globalUserLat, globalUserLng),
                 L.latLng(destLat, destLng)
             ],
-            show: false, // THIS HIDES THE CLUNKY WHITE BOX
+            show: false, 
             addWaypoints: false,
             routeWhileDragging: false,
             lineOptions: {
@@ -246,7 +244,7 @@ routeBtn.addEventListener('click', () => {
             },
             createMarker: function(i, wp, nWps) {
                 if (i === nWps - 1) {
-                    // Only show a marker at the final destination
+                    
                     return L.marker(wp.latLng).bindPopup("📍 Destination: " + dest);
                 }
                 return null;
@@ -273,9 +271,6 @@ routeBtn.addEventListener('click', () => {
     });
 });
 
-// ================= NAVIGATE ONLY MODE (Task 3) =================
-// Camera stays off entirely in this mode. We just watch GPS and poll
-// the existing /check-warning endpoint for hazards near the user.
 
 const stopNavBtn = document.getElementById("stopNavBtn");
 const navModeStatus = document.getElementById("navModeStatus");
@@ -368,8 +363,7 @@ stopNavBtn?.addEventListener("click", () => {
   hideNavWarning();
 });
 
-// Auto-hint when arriving via the "Navigate Without Camera" link from the
-// detection page, so the user knows what to do next.
+
 if (new URLSearchParams(window.location.search).get("mode") === "navigate") {
   navModeHint.textContent = "Enter a destination and search a route to begin navigating without your camera.";
 }

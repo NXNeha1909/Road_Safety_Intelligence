@@ -10,7 +10,7 @@ body {
   color: #0f172a;
 }
 
-/* Navbar */
+
 
 nav {
   height: 70px;
@@ -50,7 +50,7 @@ nav i {
 }
 
 
-/* Map Section */
+
 
 .map-section {
   min-height: calc(100vh - 70px);
@@ -71,7 +71,7 @@ nav i {
 }
 
 
-/* Counter */
+
 
 .hazard-counter {
   margin-bottom: 20px;
@@ -84,7 +84,7 @@ nav i {
 }
 
 
-/* Legend */
+
 
 .map-legend {
   display: flex;
@@ -121,7 +121,6 @@ nav i {
 }
 
 
-/* Map */
 
 #map {
   height: 600px;
@@ -131,7 +130,7 @@ nav i {
 }
 
 
-/* User Location */
+
 
 .user-location-marker {
   background: transparent;
@@ -176,7 +175,7 @@ nav i {
 }
 
 
-/* Navigate Only Mode (Task 3) */
+
 
 .nav-mode-bar {
   display: flex;
@@ -254,7 +253,7 @@ nav i {
   text-align: center;
 }
 
-/* Hazard resolve buttons (Task 6, inside Leaflet popups) */
+
 
 .hazard-popup-actions {
   display: flex;
@@ -290,7 +289,7 @@ nav i {
   background: #fecaca;
 }
 
-/* Warning banner shown during Navigate Only Mode */
+
 
 .nav-warning-banner {
   position: fixed;
@@ -337,7 +336,7 @@ nav i {
   line-height: 1;
 }
 
-/* Responsive */
+
 
 @media(max-width:600px){
 

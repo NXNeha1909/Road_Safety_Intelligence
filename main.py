@@ -5,7 +5,7 @@ import shutil
 import os
 import time
 
-# Now importing our advanced MongoDB functions
+
 from database import (
     init_db,
     save_pothole,
@@ -19,7 +19,7 @@ from ai_model import analyze_image_for_pothole
 
 app = FastAPI(title="Road Safety AI API")
 
-# Allow Frontend to communicate with Backend (CORS)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,13 +28,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize MongoDB when the app starts
+
 init_db()
 
-# Create an uploads folder to store incoming images
+
 os.makedirs("uploads", exist_ok=True)
 
-# ----------------- API ENDPOINTS -----------------
+
 
 @app.get("/")
 def home():
@@ -54,7 +54,7 @@ async def report_hazard(
     with open(filename, "wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
 
-    # Run AI Model
+   
     ai_result = analyze_image_for_pothole(filename)
 
     if ai_result["detected"]:
@@ -71,8 +71,7 @@ async def report_hazard(
             }
         })
     else:
-        # POINT 6: Hazard Verification (Decay)
-        # If road is clear, we decrease confidence of any expected potholes nearby
+        
         decay_hazard_confidence(lat, lng)
         return JSONResponse({
             "status": "clear",

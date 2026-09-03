@@ -137,6 +137,13 @@ function updateUserLocation(position) {
   globalUserLat = lat;
   globalUserLng = lng;
 
+  const globalGpsStatus = document.getElementById("globalGpsStatus");
+  if(globalGpsStatus) {
+    globalGpsStatus.innerHTML = `<i class="fa-solid fa-satellite-dish"></i> 🟢 ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+    globalGpsStatus.style.color = "#4CAF50";
+    globalGpsStatus.style.background = "rgba(76, 175, 80, 0.1)";
+  }
+
   if (!userMarker) {
     userMarker = L.marker([lat, lng], {
       icon: userIcon,
@@ -144,7 +151,6 @@ function updateUserLocation(position) {
     })
       .addTo(map)
       .bindPopup("🔵 Your Location");
-
     console.log("User Location:", lat, lng);
   } else {
     userMarker.setLatLng([lat, lng]);
@@ -153,6 +159,12 @@ function updateUserLocation(position) {
 
 function locationError(error) {
   console.log("Location Error:", error);
+  const globalGpsStatus = document.getElementById("globalGpsStatus");
+  if(globalGpsStatus) {
+    globalGpsStatus.innerHTML = `<i class="fa-solid fa-satellite-dish"></i> 🔴 GPS Lost`;
+    globalGpsStatus.style.color = "#f44336";
+    globalGpsStatus.style.background = "rgba(244, 67, 54, 0.1)";
+  }
 }
 
 if (navigator.geolocation) {

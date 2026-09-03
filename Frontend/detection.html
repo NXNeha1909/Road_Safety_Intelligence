@@ -17,7 +17,7 @@
   </head>
 
   <body>
-    <!-- ================= NAVBAR ================= -->
+   
 
     <nav>
       <div class="logo">
@@ -38,7 +38,7 @@
       </div>
     </nav>
 
-    <!-- ================= DETECTION SECTION ================= -->
+   
 
     <section class="upload-section">
       <div class="badge-pill">
@@ -54,7 +54,7 @@
         other hazards while you drive.
       </p>
 
-      <!-- Camera -->
+    
 
       <div class="camera-card glass">
         <div class="camera-box">
@@ -64,10 +64,10 @@
             <i class="fa-solid fa-video"></i>
           </div>
 
-          <!-- Shows current mode: MANUAL MODE / DRIVING MODE - LIVE -->
+   
           <div class="mode-badge" id="modeBadge">MANUAL MODE</div>
 
-          <!-- Blinking indicator, only visible while Driving Mode is active -->
+
           <div class="rec-indicator" id="recIndicator" hidden>
             <span class="dot"></span>
             LIVE
@@ -76,7 +76,7 @@
 
         <div class="camera-status" id="cameraStatus">Camera not started</div>
 
-        <!-- Manual mode controls (unchanged behavior) -->
+     
         <div class="camera-buttons">
           <button id="startCamera" type="button">
             <i class="fa-solid fa-camera"></i>
@@ -91,7 +91,7 @@
 
         <div class="divider"><span>or go hands-free</span></div>
 
-        <!-- Driving mode controls -->
+       
         <div class="driving-buttons">
           <button id="startDriving" class="btn-drive" type="button">
             <i class="fa-solid fa-car"></i>
@@ -106,7 +106,7 @@
 
         <div class="divider"><span>spotted something now?</span></div>
 
-        <!-- Manual reporting (Task 6) -->
+        
         <div class="driving-buttons">
           <button id="reportHazardBtn" class="btn-report" type="button">
             <i class="fa-solid fa-flag"></i>
@@ -119,11 +119,10 @@
           </a>
         </div>
 
-        <!-- Live stats, shown only while Driving Mode is active -->
+  
         <div class="driving-stats glass" id="drivingStats" hidden>
 
-          <!-- Live monitoring header: makes the panel read like a real
-               vehicle safety system rather than a plain stats grid -->
+         
           <div class="driving-status-header">
             <div class="driving-status-left">
               <span class="live-dot"></span>
@@ -160,15 +159,14 @@
         </div>
       </div>
 
-      <!-- Hidden Canvas used to grab frames from the video stream -->
+    
       <canvas id="canvas" hidden></canvas>
 
-      <!-- ================= MINI MAP (Dashcam View) ================= -->
+ 
       <div style="width: min(850px, 100%); margin: 30px auto; height: 300px; border-radius: 22px; overflow: hidden; border: 2px solid #e8edef; box-shadow: 0 10px 25px rgba(21, 44, 61, 0.1);">
         <div id="minimap" style="width: 100%; height: 100%;"></div>
       </div>
 
-      <!-- ================= HAZARD SHOWCASE ================= -->
 
       <div class="hazard-section">
         <div class="hazard-heading">
@@ -195,7 +193,7 @@
             </div>
           </div>
 
-          <!-- Water Logging -->
+        
           <div class="hazard-card">
             <img src="water_logging.jpeg" alt="Water logged road" />
 
@@ -213,7 +211,7 @@
             </div>
           </div>
 
-          <!-- Construction -->
+         
           <div class="hazard-card">
             <img src="constuction.jpeg" alt="Road construction site" />
 
@@ -233,7 +231,7 @@
         </div>
       </div>
 
-      <!-- ================= SAFETY MESSAGE ================= -->
+    
 
       <div class="safety-message">
         <div class="safety-line"></div>
@@ -245,8 +243,7 @@
       </div>
     </section>
 
-    <!-- ================= WARNING BANNER (pothole alert) ================= -->
-    <!-- Positioned fixed so it floats above the page regardless of scroll -->
+  
 
     <div id="warningBanner" class="warning-banner" hidden>
       <div class="warning-content">
@@ -267,7 +264,7 @@
       </div>
     </div>
 
-    <!-- ================= MANUAL REPORT MODAL ================= -->
+
 
     <div id="reportModal" class="report-modal" hidden>
       <div class="report-modal-card glass">
@@ -297,11 +294,11 @@
       </div>
     </div>
 
-    <!-- Keep existing JavaScript functionality -->
+   
 
     <script src="app.js"></script>
 
-    <!-- Mini Map Logic -->
+    
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
       // Initialize Mini Map
@@ -326,7 +323,7 @@
           });
         });
 
-      // Track user live location and follow them on the mini map
+     
       if(navigator.geolocation) {
         navigator.geolocation.watchPosition((pos) => {
           const lat = pos.coords.latitude;

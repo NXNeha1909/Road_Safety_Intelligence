@@ -51,7 +51,7 @@ body {
   margin-right: 8px;
 }
 
-/* NAVBAR */
+
 
 nav {
   height: 82px;
@@ -125,7 +125,7 @@ nav {
   transform: translateY(-2px);
 }
 
-/* HERO */
+
 
 .hero {
   min-height: 690px;
@@ -196,7 +196,7 @@ nav {
   margin-bottom: 35px;
 }
 
-/* BUTTONS */
+
 
 .buttons {
   display: flex;
@@ -249,7 +249,7 @@ button {
   transform: translateY(-3px);
 }
 
-/* TRUST ROW */
+
 
 .trust-row {
   display: flex;
@@ -277,7 +277,7 @@ button {
   background: var(--border);
 }
 
-/* HERO VISUAL */
+
 
 .hero-image {
   display: flex;
@@ -451,7 +451,7 @@ button {
   margin-right: 7px;
 }
 
-/* FEATURES */
+
 
 .features {
   padding: 110px 7%;
@@ -650,7 +650,6 @@ button {
   opacity: 0.6;
 }
 
-/* ABOUT */
 
 .about {
   padding: 100px 7%;
@@ -715,7 +714,6 @@ button {
   margin-top: 5px;
 }
 
-/* FOOTER */
 
 footer {
   padding: 30px 7%;
@@ -737,7 +735,7 @@ footer {
   margin-right: 7px;
 }
 
-/* RESPONSIVE */
+
 
 @media (max-width: 900px) {
   nav {

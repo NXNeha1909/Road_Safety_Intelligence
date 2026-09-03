@@ -1,7 +1,5 @@
 const API_BASE = "https://road-safety-intelligence-backend-38aw.onrender.com";
 
-// Camera Elements
-
 const startCameraBtn = document.getElementById("startCamera");
 const captureBtn = document.getElementById("captureBtn");
 
@@ -13,7 +11,7 @@ const status = document.getElementById("cameraStatus");
 const modeBadge = document.getElementById("modeBadge");
 const recIndicator = document.getElementById("recIndicator");
 
-// Driving Mode Elements
+
 
 const startDrivingBtn = document.getElementById("startDriving");
 const stopDrivingBtn = document.getElementById("stopDriving");
@@ -25,7 +23,6 @@ const framesSent = document.getElementById("framesSent");
 const hazardsFound = document.getElementById("hazardsFound");
 const nextScan = document.getElementById("nextScan");
 
-// Warning Elements
 
 const warningBanner = document.getElementById("warningBanner");
 const warnConfidence = document.getElementById("warnConfidence");
@@ -55,7 +52,7 @@ let warningTimer = null;
 
 let lastVoiceTime = 0;
 
-// Camera Start
+
 
 async function startCamera() {
   if (stream) return true;
@@ -85,7 +82,7 @@ async function startCamera() {
   }
 }
 
-// Capture Image
+
 
 function captureImage() {
   canvas.width = video.videoWidth;
@@ -103,7 +100,7 @@ function captureImage() {
   });
 }
 
-// Send Image Backend
+
 
 function sendImage(blob, lat, lng) {
   const file = new File([blob], "captured-road.jpg", {
@@ -124,7 +121,7 @@ function sendImage(blob, lat, lng) {
   }).then((res) => res.json());
 }
 
-// Voice Alert
+
 
 function voiceAlert() {
   if (!("speechSynthesis" in window)) return;
@@ -148,7 +145,7 @@ function voiceAlert() {
   speechSynthesis.speak(speech);
 }
 
-// Warning Banner
+
 
 function showWarning(confidence, location) {
   warnConfidence.innerHTML = `Confidence: ${Math.round((confidence || 0) * 100)}%`;
@@ -157,8 +154,6 @@ function showWarning(confidence, location) {
 
   warnLocation.innerHTML = `📍 ${location}`;
 
-  // Un-hide first, then add "show" on the next frame so the CSS
-  // transition/animation (defined on .warning-banner.show) actually runs.
   warningBanner.hidden = false;
 
   requestAnimationFrame(() => {
@@ -176,7 +171,6 @@ function showWarning(confidence, location) {
 
 function hideWarning() {
   warningBanner.classList.remove("show");
-  // Wait for the slide-out transition before actually hiding the element.
   setTimeout(() => {
     warningBanner.hidden = true;
   }, 450);
@@ -187,7 +181,6 @@ dismissWarning?.addEventListener("click", () => {
   hideWarning();
 });
 
-// Manual Camera
 
 startCameraBtn?.addEventListener("click", async (e) => {
   e.preventDefault();
@@ -199,7 +192,7 @@ startCameraBtn?.addEventListener("click", async (e) => {
   }
 });
 
-// Manual Capture
+
 
 captureBtn?.addEventListener("click", (e) => {
   e.preventDefault();
@@ -254,7 +247,6 @@ captureBtn?.addEventListener("click", (e) => {
   );
 });
 
-// GPS Tracking
 
 let proximityTimer = null;
 
@@ -292,7 +284,6 @@ function startGPS() {
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
 
-  // Point 2 & 3: Check for existing hazards every 4 seconds (even if camera is not capturing)
   proximityTimer = setInterval(() => {
       if(!currentLocation) return;
       fetch(`${API_BASE}/check-warning?lat=${currentLocation.lat}&lng=${currentLocation.lng}`)
@@ -384,7 +375,7 @@ function scheduleCapture() {
   );
 }
 
-// Start Driving
+
 
 startDrivingBtn?.addEventListener(
   "click",
@@ -413,7 +404,7 @@ startDrivingBtn?.addEventListener(
   },
 );
 
-// Stop Driving
+
 
 stopDrivingBtn?.addEventListener(
   "click",
@@ -438,7 +429,7 @@ stopDrivingBtn?.addEventListener(
   },
 );
 
-// ================= MANUAL HAZARD REPORTING (Task 6) =================
+
 
 const reportHazardBtn = document.getElementById("reportHazardBtn");
 const reportModal = document.getElementById("reportModal");

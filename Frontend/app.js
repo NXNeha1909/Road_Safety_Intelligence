@@ -304,7 +304,7 @@ function startGPS() {
                 showWarning(topHazard?.confidence ?? 0.9, "NEARBY EXISTING HAZARD");
             }
         }).catch(e => console.log(e));
-  }, 10000);
+  }, 5000);
 }
 
 function stopGPS() {
@@ -380,7 +380,7 @@ function scheduleCapture() {
   frameTimer = setTimeout(
     drivingCapture,
 
-    10000,
+    5000,
   );
 }
 
